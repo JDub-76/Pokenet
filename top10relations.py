@@ -15,9 +15,8 @@ pdata = data["data"]
 labeldict = {}
 nodelist = []
 nodesizes = []
-USAGE_THRESHOLD = 0.05
-PARTNER_THRESHOLD = USAGE_THRESHOLD
-SELF_PARTNER_PERCENTAGE =0.25#only consider mons with at least this weight as partners
+USAGE_THRESHOLD = 0.162
+PARTNER_THRESHOLD = 0.162
 SINGLE_MON = ""
 
 for i in pdata:
@@ -28,8 +27,8 @@ for i in pdata:
             if i != SINGLE_MON and teammate != SINGLE_MON and SINGLE_MON != "":
                 continue
             # print( pdata[i]["Teammates"][teammate]/pdata[i]["Raw count"])
-            if pdata[i]["Teammates"][teammate] / pdata[i]["Raw count"] >= SELF_PARTNER_PERCENTAGE:
-                if pdata.get(teammate) is None:
+            if pdata[i]["Teammates"][teammate] / pdata[i]["Raw count"] >= 0.03:
+                if (pdata.get(teammate) is None):
                     continue
                 if pdata[teammate]["usage"] >= PARTNER_THRESHOLD:
                     # print(teammate,pdata[teammate]["usage"])
@@ -65,8 +64,7 @@ plt.figure(figsize=(15, 15))
 nx.draw(g, labels=labeldict, node_size=nodesizes, pos=pos, font_size=18, edge_color=edgecolors, with_labels=True,
         connectionstyle='arc3, rad = 0.1',arrowsize=25)
 # nx.draw_networkx_edge_labels(g,pos=pos,edge_labels=edgelabels)
-
-print(nx.density(g))
+print(nx.info(g))
 plt.savefig("safe.png",format="PNG")
 
 plt.show()
